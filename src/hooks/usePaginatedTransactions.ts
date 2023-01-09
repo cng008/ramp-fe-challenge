@@ -10,6 +10,7 @@ export function usePaginatedTransactions(): PaginatedTransactionsResult {
   > | null>(null)
 
   const fetchAll = useCallback(async () => {
+    // Fetch the next page of transactions, using the page parameter from the previous response if available
     const response = await fetchWithCache<PaginatedResponse<Transaction[]>, PaginatedRequestParams>(
       "paginatedTransactions",
       {
@@ -17,13 +18,15 @@ export function usePaginatedTransactions(): PaginatedTransactionsResult {
       }
     )
 
-    setPaginatedTransactions((previousResponse) => {
-      if (response === null || previousResponse === null) {
-        return response
-      }
-
-      return { data: response.data, nextPage: response.nextPage }
-    })
+    // concatenates it with the previous data instead of replacing it
+    if (response === null || paginatedTransactions === null) {
+      setPaginatedTransactions(response)
+    } else {
+      setPaginatedTransactions({
+        data: [...paginatedTransactions.data, ...response.data],
+        nextPage: response.nextPage,
+      })
+    }
   }, [fetchWithCache, paginatedTransactions])
 
   const invalidateData = useCallback(() => {
