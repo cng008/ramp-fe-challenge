@@ -12,7 +12,7 @@ export const InputCheckbox: InputCheckboxComponent = ({ id, checked = false, dis
     <div className="RampInputCheckbox--container" data-testid={inputId}>
       {/* The label for the checkbox. The class names are dynamic and will change based on the state of the checkbox. */}
       <label
-        htmlFor={inputId}
+        htmlFor={inputId} // BUG 2
         className={classNames("RampInputCheckbox--label", {
           "RampInputCheckbox--label-checked": checked,
           "RampInputCheckbox--label-disabled": disabled,
@@ -21,12 +21,15 @@ export const InputCheckbox: InputCheckboxComponent = ({ id, checked = false, dis
       {/* The actual checkbox */}
       <input
         id={inputId}
-        name={inputId}
+        name="approval"
         type="checkbox"
         className="RampInputCheckbox--input"
         checked={checked}
         disabled={disabled}
-        onChange={() => onChange(!checked)}
+        onChange={() => {
+          // console.debug("sending...", !checked)
+          onChange(!checked)
+        }}
       />
     </div>
   )

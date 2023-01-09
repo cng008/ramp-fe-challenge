@@ -1,7 +1,9 @@
-import Downshift from "downshift"
+import Downshift from "downshift" // library that helps with building accessible dropdown menus
 import { useCallback, useState } from "react"
 import classNames from "classnames"
 import { DropdownPosition, GetDropdownPositionFn, InputSelectOnChange, InputSelectProps } from "./types"
+
+// InputSelect is a function that returns a JSX element representing a dropdown menu
 
 export function InputSelect<TItem>({
   label,
@@ -12,12 +14,15 @@ export function InputSelect<TItem>({
   isLoading,
   loadingLabel,
 }: InputSelectProps<TItem>) {
+  // currently selected value
   const [selectedValue, setSelectedValue] = useState<TItem | null>(defaultValue ?? null)
+  // position of the dropdown menu
   const [dropdownPosition, setDropdownPosition] = useState<DropdownPosition>({
     top: 0,
     left: 0,
   })
 
+  // updates the selected value and calls the consumerOnChange function
   const onChange = useCallback<InputSelectOnChange<TItem>>(
     (selectedItem) => {
       if (selectedItem === null) {
@@ -47,8 +52,8 @@ export function InputSelect<TItem>({
         getToggleButtonProps,
         inputValue,
       }) => {
-        const toggleProps = getToggleButtonProps()
-        const parsedSelectedItem = selectedItem === null ? null : parseItem(selectedItem)
+        const toggleProps = getToggleButtonProps() // opens/closes the dropdown menu
+        const parsedSelectedItem = selectedItem === null ? null : parseItem(selectedItem) // displays option in the dropdown menu once selected
 
         return (
           <div className="RampInputSelect--root">
@@ -59,8 +64,8 @@ export function InputSelect<TItem>({
             <div
               className="RampInputSelect--input"
               onClick={(event) => {
-                setDropdownPosition(getDropdownPosition(event.target))
-                toggleProps.onClick(event)
+                setDropdownPosition(getDropdownPosition(event.target)) // updates position of dropdown menu
+                toggleProps.onClick(event) // open/close the dropdown menu
               }}
             >
               {inputValue}
@@ -78,6 +83,7 @@ export function InputSelect<TItem>({
           </div>
         )
 
+        // returns JSX elements representing the items in the dropdown menu
         function renderItems() {
           if (!isOpen) {
             return null
@@ -117,6 +123,7 @@ export function InputSelect<TItem>({
   )
 }
 
+// calculates the position of the dropdown menu
 const getDropdownPosition: GetDropdownPositionFn = (target) => {
   if (target instanceof Element) {
     const { top, left } = target.getBoundingClientRect()

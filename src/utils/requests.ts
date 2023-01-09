@@ -51,10 +51,11 @@ export const setTransactionApproval = ({ transactionId, value }: SetTransactionA
   const transaction = data.transactions.find(
     (currentTransaction) => currentTransaction.id === transactionId
   )
-
+  // console.debug("setTransactionApproval=", transaction, value)
   if (!transaction) {
     throw new Error("Invalid transaction to approve")
   }
 
   transaction.approved = value
+  // console.debug("transaction.approved=", transaction.approved, "value=", value)
 }

@@ -8,6 +8,7 @@ export const TransactionPane: TransactionPaneComponent = ({
   setTransactionApproval: consumerSetTransactionApproval,
 }) => {
   const [approved, setApproved] = useState(transaction.approved)
+  // console.debug(transaction.merchant, transaction.approved, approved)
 
   return (
     <div className="RampPane">
@@ -23,12 +24,15 @@ export const TransactionPane: TransactionPaneComponent = ({
         checked={approved}
         disabled={loading}
         onChange={async (newValue) => {
+          console.log("sending to API...", newValue)
+          // sends request to API to update transaction status
           await consumerSetTransactionApproval({
             transactionId: transaction.id,
             newValue,
           })
-
+          console.log("updated with", newValue)
           setApproved(newValue)
+          console.log("api returns=", transaction.approved, "should be=", newValue)
         }}
       />
     </div>

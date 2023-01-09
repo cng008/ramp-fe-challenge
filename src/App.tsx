@@ -12,7 +12,7 @@ export function App() {
   const { data: employees, ...employeeUtils } = useEmployees()
   const { data: paginatedTransactions, ...paginatedTransactionsUtils } = usePaginatedTransactions()
   const { data: transactionsByEmployee, ...transactionsByEmployeeUtils } = useTransactionsByEmployee()
-
+  // BUG 5 remove isLoading state
   const transactions = useMemo(
     () => paginatedTransactions?.data ?? transactionsByEmployee ?? null,
     [paginatedTransactions, transactionsByEmployee]
@@ -20,7 +20,7 @@ export function App() {
   // console.log(transactions)
 
   const loadAllTransactions = useCallback(async () => {
-    // transactionsByEmployeeUtils.invalidateData()
+    // transactionsByEmployeeUtils.invalidateData() // BUG 7
     // console.log("loading ALL employee data...")
 
     await employeeUtils.fetchAll()
@@ -64,6 +64,7 @@ export function App() {
             if (newValue === null) {
               return
             }
+            // BUG 3
             if (newValue.id === "") {
               loadAllTransactions()
             } else {
@@ -77,7 +78,7 @@ export function App() {
         <div className="RampGrid">
           <Transactions transactions={transactions} />
 
-          {/* removes button when there's no more data to show */}
+          {/* removes button when there's no more data to show, BUG 6 */}
           {transactionsByEmployee === null && paginatedTransactions?.nextPage && (
             <button
               className="RampButton"
