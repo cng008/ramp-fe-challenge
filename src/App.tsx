@@ -18,6 +18,7 @@ export function App() {
     () => paginatedTransactions?.data ?? transactionsByEmployee ?? null,
     [paginatedTransactions, transactionsByEmployee]
   )
+  // console.log(paginatedTransactions, transactionsByEmployee, isLoading, transactions)
 
   const loadAllTransactions = useCallback(async () => {
     setIsLoading(true)
@@ -77,7 +78,8 @@ export function App() {
         <div className="RampGrid">
           <Transactions transactions={transactions} />
 
-          {transactions !== null && (
+          {/* removes button when there's no more data to show */}
+          {transactionsByEmployee === null && paginatedTransactions?.nextPage && (
             <button
               className="RampButton"
               disabled={paginatedTransactionsUtils.loading}
