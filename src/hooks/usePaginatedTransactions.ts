@@ -19,7 +19,7 @@ export function usePaginatedTransactions(): PaginatedTransactionsResult {
     )
 
     // concatenates it with the previous data instead of replacing it
-    if (response === null || paginatedTransactions === null) {
+    if (!response || !paginatedTransactions) {
       setPaginatedTransactions(response)
     } else {
       setPaginatedTransactions({
