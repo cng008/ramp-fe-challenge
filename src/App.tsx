@@ -17,19 +17,23 @@ export function App() {
     () => paginatedTransactions?.data ?? transactionsByEmployee ?? null,
     [paginatedTransactions, transactionsByEmployee]
   )
-  // console.log(paginatedTransactions, transactionsByEmployee, isLoading, transactions)
+  // console.log(transactions)
 
   const loadAllTransactions = useCallback(async () => {
-    transactionsByEmployeeUtils.invalidateData()
+    // transactionsByEmployeeUtils.invalidateData()
+    // console.log("loading ALL employee data...")
 
     await employeeUtils.fetchAll()
     await paginatedTransactionsUtils.fetchAll()
+    // console.log("ALL employee data DONE")
   }, [employeeUtils, paginatedTransactionsUtils, transactionsByEmployeeUtils])
 
   const loadTransactionsByEmployee = useCallback(
     async (employeeId: string) => {
       paginatedTransactionsUtils.invalidateData()
+      // console.log("loading employee data...")
       await transactionsByEmployeeUtils.fetchById(employeeId)
+      // console.log("employee data DONE")
     },
     [paginatedTransactionsUtils, transactionsByEmployeeUtils]
   )
@@ -61,7 +65,7 @@ export function App() {
               return
             }
             if (newValue.id === "") {
-              await loadAllTransactions()
+              loadAllTransactions()
             } else {
               await loadTransactionsByEmployee(newValue.id)
             }
